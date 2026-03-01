@@ -26,7 +26,7 @@ export default function Header() {
           <SignedOut>
             <SignInButton />
             <SignUpButton>
-              <button className="bg-[#6c47ff] text-white rounded-full px-5 h-10">
+              <button className="bg-green-700 text-white rounded-full px-5 h-10">
                 Sign Up
               </button>
             </SignUpButton>
