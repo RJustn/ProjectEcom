@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '../components/Header';
@@ -28,7 +29,8 @@ interface Order {
 }
 
 export default function OrdersPage() {
-  const { isLoaded, isSignedIn, sessionClaims } = useAuth();
+  const { isLoaded: isAuthLoaded, isSignedIn, sessionClaims } = useAuth();
+  const { isLoaded: isUserLoaded, user } = useUser();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,8 +51,12 @@ export default function OrdersPage() {
       try {
         let email: string | null = null;
 
-        if (isSignedIn && sessionClaims?.email) {
-          email = sessionClaims.email as string;
+        if (isSignedIn) {
+          email =
+            user?.primaryEmailAddress?.emailAddress ||
+            user?.emailAddresses?.[0]?.emailAddress ||
+            (sessionClaims?.email as string | undefined) ||
+            null;
         } else {
           const storedEmail = localStorage.getItem('checkoutEmail');
           if (storedEmail) {
@@ -63,6 +69,8 @@ export default function OrdersPage() {
           setLoading(false);
           return;
         }
+
+        setError(null);
 
         const response = await fetch(
           apiUrl(`/users/orders?email=${encodeURIComponent(email)}`)
@@ -81,10 +89,18 @@ export default function OrdersPage() {
       }
     };
 
-    if (isLoaded) {
+    if (!isAuthLoaded) {
+      return;
+    }
+
+    if (isSignedIn && !isUserLoaded) {
+      return;
+    }
+
+    if (loading) {
       fetchOrders();
     }
-  }, [isLoaded, isSignedIn, sessionClaims]);
+  }, [isAuthLoaded, isUserLoaded, isSignedIn, sessionClaims, user, loading]);
 
   const handleRequestCancel = async (orderId: number) => {
     if (!confirm('Are you sure you want to request cancellation for this order?')) {
