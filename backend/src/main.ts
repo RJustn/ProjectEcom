@@ -5,7 +5,12 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const frontendOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000')
+  const defaultFrontendOrigins = [
+    'http://localhost:3000',
+    'https://ricasataecomproject.vercel.app',
+  ];
+
+  const frontendOrigins = (process.env.FRONTEND_URL || defaultFrontendOrigins.join(','))
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
