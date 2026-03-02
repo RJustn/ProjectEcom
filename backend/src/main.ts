@@ -10,10 +10,12 @@ async function bootstrap() {
     'https://ricasataecomproject.vercel.app',
   ];
 
-  const frontendOrigins = (process.env.FRONTEND_URL || defaultFrontendOrigins.join(','))
+  const envFrontendOrigins = (process.env.FRONTEND_URL || '')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+
+  const frontendOrigins = [...new Set([...defaultFrontendOrigins, ...envFrontendOrigins])];
 
   app.enableCors({
     origin: frontendOrigins,

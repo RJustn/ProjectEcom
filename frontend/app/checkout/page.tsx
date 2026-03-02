@@ -21,6 +21,8 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
+      const frontendBaseUrl = window.location.origin;
+
       const response = await fetch(apiUrl("/users/checkout/paymongo"), {
         method: "POST",
         headers: {
@@ -32,6 +34,8 @@ export default function CheckoutPage() {
             productId: item.id,
             quantity: item.qty,
           })),
+          successUrl: `${frontendBaseUrl}/checkout/success`,
+          cancelUrl: `${frontendBaseUrl}/checkout`,
         }),
       });
 

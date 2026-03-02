@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Param, Body, NotFoundException, BadRequestException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, NotFoundException, BadRequestException, Query, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not, IsNull, In } from 'typeorm';
+import type { Request } from 'express';
 import { Order } from '../orders/order.entity';
 import { OrderItem } from '../orders/order.item-entity';
 import { Product } from '../products/product.entity';
@@ -28,7 +29,7 @@ export class CheckoutController {
   ) {}
 
   @Post('paymongo')
-  async createPaymongoCheckout(@Body() body: CreateCheckoutInput) {
+  async createPaymongoCheckout(@Body() body: CreateCheckoutInput, @Req() req: Request) {
     const { email, items, successUrl, cancelUrl } = body;
 
     if (!email) throw new BadRequestException('email is required');
@@ -89,7 +90,14 @@ export class CheckoutController {
       throw new BadRequestException('PAYMONGO_SECRET_KEY is not configured');
     }
 
-    const frontendBaseUrl = (process.env.FRONTEND_URL || 'http://localhost:3000').replace(/\/+$/, '');
+    const originHeader = req.headers.origin;
+    const requestOrigin = Array.isArray(originHeader) ? originHeader[0] : originHeader;
+    const frontendBaseUrl = (process.env.FRONTEND_URL || requestOrigin || 'http://localhost:3000').replace(/\/+$/, '');
+    const resolvedSuccessUrl = new URL(successUrl || '/checkout/success', frontendBaseUrl);
+    if (!resolvedSuccessUrl.searchParams.has('orderId')) {
+      resolvedSuccessUrl.searchParams.set('orderId', String(order.id));
+    }
+    const resolvedCancelUrl = new URL(cancelUrl || '/checkout', frontendBaseUrl);
 
     const payload = {
       data: {
@@ -104,10 +112,8 @@ export class CheckoutController {
             };
           }),
           payment_method_types: ['gcash', 'paymaya', 'card'],
-          success_url:
-            successUrl ||
-            `${frontendBaseUrl}/checkout/success?orderId=${order.id}`,
-          cancel_url: cancelUrl || `${frontendBaseUrl}/checkout`,
+          success_url: resolvedSuccessUrl.toString(),
+          cancel_url: resolvedCancelUrl.toString(),
           metadata: {
             orderId: String(order.id),
             email,
