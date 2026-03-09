@@ -92,7 +92,7 @@ export default function ProductsPage() {
           </div>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-green-700 font-semibold hover:bg-green-50 hover:border-green-300 transition"
+            className="inline-flex items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-green font-semibold hover:bg-green-50 hover:border-green-300 transition"
           >
             <span className="mr-2">←</span>
             Back to Home

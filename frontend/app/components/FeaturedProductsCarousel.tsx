@@ -17,6 +17,8 @@ interface Props {
   products: Product[];
 }
 
+const SLIDE_ANIMATION_MS = 620;
+
 export default function FeaturedProductsCarousel({ products }: Props) {
   const [randomProducts, setRandomProducts] = useState<Product[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -71,7 +73,7 @@ export default function FeaturedProductsCarousel({ products }: Props) {
 
   useEffect(() => {
     if (!isAnimating) return;
-    const timeout = setTimeout(() => setIsAnimating(false), 520);
+    const timeout = setTimeout(() => setIsAnimating(false), SLIDE_ANIMATION_MS);
     return () => clearTimeout(timeout);
   }, [currentIndex, isAnimating]);
 

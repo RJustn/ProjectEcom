@@ -58,13 +58,13 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-4">
               <a
                 href="#featured-products"
-                className="bg-white text-green-800 px-7 py-3 rounded-lg font-semibold hover:bg-green-50 transition"
+                className="bg-white text-green px-7 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-green-50 hover:border-green-300 transition"
               >
                 Shop Now
               </a>
               <Link
                 href="/products"
-                className="border border-white/80 text-white px-7 py-3 rounded-lg font-semibold hover:bg-white/15 transition"
+                className="border border-white/80 text-white px-7 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-white/15 transition"
               >
                 Browse Catalog
               </Link>
@@ -100,7 +100,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/products"
-            className="inline-flex items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-green-700 font-semibold hover:bg-green-50 hover:border-green-300 transition"
+            className="inline-flex items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-green font-semibold no-underline hover:no-underline hover:bg-green-50 hover:border-green-300 transition"
           >
             View all products
             <span className="ml-2">→</span>
@@ -175,13 +175,13 @@ export default async function HomePage() {
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href={`/products/${featuredProduct.id}`}
-                    className="inline-flex items-center justify-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+                    className="inline-flex items-center justify-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-green-700 transition"
                   >
                     View Product
                   </Link>
                   <Link
                     href="/products"
-                    className="inline-flex items-center justify-center border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition"
+                    className="inline-flex items-center justify-center border border-green-200 text-green px-6 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-green-50 hover:border-green-300 transition"
                   >
                     Browse More
                   </Link>
@@ -230,7 +230,7 @@ export default async function HomePage() {
             </div>
             <Link
               href="/products"
-              className="inline-flex items-center justify-center bg-green-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+              className="inline-flex items-center justify-center bg-green-600 text-white px-7 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-green-700 transition"
             >
               Explore Products
             </Link>
@@ -248,7 +248,7 @@ export default async function HomePage() {
           </div>
           <Link
             href="/products"
-            className="inline-flex items-center justify-center bg-green-600 text-white px-7 py-3 rounded-lg font-semibold hover:bg-green-700 transition"
+            className="inline-flex items-center justify-center bg-green-600 text-white px-7 py-3 rounded-lg font-semibold no-underline hover:no-underline hover:bg-green-700 transition"
           >
             Start Shopping
           </Link>
